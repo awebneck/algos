@@ -6,11 +6,12 @@
   (loop [[lhead & ltail :as left]  left
          [rhead & rtail :as right] right
          coll                      []]
+    (incops)
     (cond (and (nil? lhead)
-               (nil? rhead))                                 (do (incops) (seq coll))
+               (nil? rhead))                                 (seq coll)
           (or (nil? lhead)
-              (> lhead (or rhead Double/POSITIVE_INFINITY))) (do (incops) (recur left rtail (conj coll rhead)))
-          :else                                              (do (incops) (recur ltail right (conj coll lhead))))))
+              (> lhead (or rhead Double/POSITIVE_INFINITY))) (recur left rtail (conj coll rhead))
+          :else                                              (recur ltail right (conj coll lhead)))))
 
 (defn mergesort
   [coll]
